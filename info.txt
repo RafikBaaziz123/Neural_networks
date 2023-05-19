@@ -1,0 +1,26 @@
+; Number of Instances: 101
+; Number of Attributes: 18 (animal name  15 Boolean attributes  2 numerics)
+; Attribute Information: (name of attribute and type of value domain)
+
+; Attribute animal {aardvark antelope bass bear boar buffalo calf carp catfish cavy cheetah chicken chub clam crab crayfish crow deer dogfish dolphin dove duck elephant flamingo flea frog fruitbat giraffe girl gnat goat gorilla gull haddock hamster hare hawk herring honeybee housefly kiwi ladybird lark leopard lion lobster lynx mink mole mongoose moth newt octopus opossum oryx ostrich parakeet penguin pheasant pike piranha pitviper platypus polecat pony porpoise puma pussycat raccoon reindeer rhea scorpion seahorse seal sealion seasnake seawasp skimmer skua slowworm slug sole sparrow squirrel starfish stingray swan termite toad tortoise tuatara tuna vampire vole vulture wallaby wasp wolf worm wren}
+
+; Attribute hair { 0   1}
+; Attribute feathers { 0   1}
+; Attribute eggs { 0   1}
+; Attribute milk { 0   1}
+; Attribute airborne { 0   1}
+; Attribute aquatic { 0   1}
+; Attribute predator { 0   1}
+; Attribute toothed { 0   1}
+; Attribute backbone { 0   1}
+; Attribute breathes { 0   1}
+; Attribute venomous { 0   1}
+; Attribute fins { 0   1}
+; Attribute legs {0  1  2  3  4  5  6  7  8  9}
+; Attribute tail { 0   1}
+; Attribute domestic { 0   1}
+; Attribute catsize { 0   1}
+; Attribute type { mammal  bird  reptile  fish  amphibian  insect  invertebrate }
+
+
+; Instances (101):
