@@ -10,6 +10,7 @@ def make(nx, nz, ny):
     mais os respectivos pesos, para lidar com os tresholds; note-se tambem que, 
     tal como foi discutido na teorica, as saidas destas estas unidades estao sempre a -1.
     por exemplo, a chamada make(3, 5, 2) cria e devolve uma rede 3x5x2"""
+   
     """A function that creates, initializes, and returns a neural network, including
     the creation of the various lists as well as the initialization of the lists of weights. 
     Note that two extra units are included, one input and one hidden, plus their respective weights, to handle the tresholds; 
@@ -33,7 +34,6 @@ def make(nx, nz, ny):
     
     nn['wzx'] = [[random.uniform(-0.5,0.5) for _ in range(nn['nx'] + 1)] for _ in range(nn['nz'])]
     nn['wyz'] = [[random.uniform(-0.5,0.5) for _ in range(nn['nz'] + 1)] for _ in range(nn['ny'])]
-    
     return nn
 
 def sig(input):
@@ -44,12 +44,6 @@ def sig(input):
 
 
 def forward(nn, input):
-    """Função que recebe uma rede nn e um padrao de entrada in (uma lista) 
-    e faz a propagacao da informacao para a frente ate as saidas"""
-    """Function that receives a net nn and an input pattern in (a list),
-    and propagates the information forward to the outputs"""
-    
-    #copia a informacao do vector de entrada in para a listavector de inputs da rede nn  
     nn['x']=input.copy()
     nn['x'].append(-1)
     
@@ -134,12 +128,12 @@ def train_xor():
 def run():
     """Funcao principal do nosso programa, cria os conjuntos de treino e teste, chama
     a funcao que cria e treina a rede e, por fim, a funcao que a treina"""
+    """Main function of our program, it creates the training and test sets, calls
+     the function that creates and trains the network and, finally, the function that trains it"""
     
-    #training_set, test_set = build_sets("zoo.txt")
-    #nn = train_zoo(training_set)
-    #test_zoo(nn, test_set)
-    
-    pass
+    training_set, test_set = build_sets("zoo.txt")
+    nn= train_zoo(training_set)
+    test_zoo(nn, test_set)
     
 
 
@@ -150,10 +144,32 @@ def build_sets(f):
     o padrao de treino. Estes padroes são colocados numa lista 
     Finalmente, devolve duas listas, uma com os primeiros 67 padroes (conjunto de treino)
     e a segunda com os restantes (conjunto de teste)"""
-    
-    input_file = ['aardvark', 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 4, 0, 0, 1, 'mammal']
-    finalList = translate(input_file)
-    return finalList
+    file1 = open('zoo.txt', 'r')
+    Lines = file1.readlines()
+    compt=0
+    training_set=[]
+    test_set= []
+    shuf = []
+    for line in Lines:
+        line = line[1:-2]
+
+        # Split the line by commas
+        items = line.split(",")
+
+        # Convert each item to the appropriate data type
+        items = [int(item) if item.isdigit() else item for item in items]
+        print(items)  
+        shuf.append(items)    
+        # random.shuffle(translate(items))
+    #print(zeb)
+    random.shuffle(shuf)
+    for i in shuf:
+        compt+=1
+        if compt<=67:       
+            training_set.append(translate(i))
+        else:
+            test_set.append(translate(i))        
+    return training_set,test_set
 
 
 def translate(lista):
@@ -202,14 +218,28 @@ def translate(lista):
 
 def train_zoo(training_set):
     """cria a rede e chama a funçao iterate para a treinar. Use 300 iteracoes"""
+    #create the network and call the iterate function to train it. Use 300 iterations
+    #def iterate(i, nn, input, output):
+    net = make(25, 13, 7)
+
+    for j in range (300):
+        for i in range(len(training_set)):
+            
+            iterate(j,net,training_set[i][1],training_set[i][3])
+    return net
+   
+        
     
-    pass
 
 def retranslate(out):
     """recebe o padrao de saida da rede e devolve o tipo de animal corresponte.
     Devolve o tipo de animal corresponde ao indice da saida com maior valor."""
+    """receives the output pattern from the network and returns the corresponding animal type.
+     Returns the type of animal corresponding to the output index with the highest value."""
+    animal_type=[ 'mammal' , 'bird' , 'reptile' , 'fish' , 'amphibian' , 'insect',  'invertebrate']
+    return animal_type[out]
     
-    pass
+    
 
 def test_zoo(net, test_set):
     """Funcao que avalia a precisao da rede treinada, utilizando o conjunto de teste.
@@ -217,12 +247,31 @@ def test_zoo(net, test_set):
     do animal que corresponde ao maior valor da lista de saida. O tipo determinado
     pela rede deve ser comparado com o tipo real, sendo contabilizado o número
     de respostas corretas. A função calcula a percentagem de respostas corretas"""
+    """Function that evaluates the accuracy of the trained network, using the test set.
+     For each pattern in the test set, call the forward function and determine the type of animal that corresponds to the largest value in the output list. The type determined by the network must be compared with the real type, counting the number of correct answers. The function calculates the percentage of correct answers"""
+    liste=[]
+    for i in range(len(test_set)):
+        forward(net,test_set[i][1])
+        liste.append(net['y'])
+    success_rate = 0
+    for l in range(len(liste)) :
+        for li in liste[l]:
+            x=max(liste[l])
+            indx=liste[l].index(x)
+        print("The network thinks ", test_set[l][0] ," is a ",retranslate(indx)," it should be a ", test_set[l][2])
+        if test_set[l][2] == retranslate(indx):
+            success_rate += 1
+    print((success_rate * 100) / len(test_set))
+      
     
-    pass
+    
+
+    
+
 
 if __name__ == "__main__":
-    train_and()
-    lst = build_sets("azij")
-    print(lst)
-    #run()
+    #train_and()
+   
+    
+    run()
     
